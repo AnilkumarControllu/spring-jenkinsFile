@@ -246,30 +246,6 @@ def sendEmail(status) {
             body: "Changes:\n " + getChangeString() + "\n\n Check console output at: $BUILD_URL/console" + "\n")
 }
 
-def getDevVersion() {
-    def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-    def versionNumber;
-    if (gitCommit == null) {
-        versionNumber = env.BUILD_NUMBER;
-    } else {
-        versionNumber = gitCommit.take(8);
-    }
-    print 'build  versions...'
-    print versionNumber
-    return versionNumber
-}
-
-def getReleaseVersion() {
-    def pom = readMavenPom file: 'pom.xml'
-    def gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-    def versionNumber;
-    if (gitCommit == null) {
-        versionNumber = env.BUILD_NUMBER;
-    } else {
-        versionNumber = gitCommit.take(8);
-    }
-    return pom.version.replace("-SNAPSHOT", ".${versionNumber}")
-}
 
 // if you want parallel execution , check below :
 /* stage('Quality Gate(Integration Tests and Sonar Scan)') {
